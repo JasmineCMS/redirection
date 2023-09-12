@@ -22,6 +22,7 @@
           <div class="field p-1 pt-2 form-group">
             <label class="form-label fw-semibold" :for="r.id+'_from'" v-text="$t('From (old url)')"/>
             <input type="text" :id="r.id+'_from'" v-model="r.from" class="form-control form-control-sm" dir="ltr">
+            <div class="text-muted mb-1" style="font-size: .8rem;">{{ decodeURI(r.from) }}</div>
           </div>
           <div class="d-flex align-items-center mt-2">
             <div class="form-check form-switch">
@@ -46,6 +47,7 @@
           <div class="field p-1 pt-2 form-group">
             <label class="form-label fw-semibold" :for="r.id+'_to'" v-text="$t('To (new url)')"/>
             <input type="text" :id="r.id+'_to'" v-model="r.to" class="form-control form-control-sm" dir="ltr">
+            <div class="text-muted mb-1" style="font-size: .8rem;">{{ decodeURI(r.to) }}</div>
           </div>
         </div>
 
