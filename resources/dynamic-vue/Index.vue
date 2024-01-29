@@ -13,6 +13,12 @@
           <i class="bi bi-upload"></i>
           {{ $t('Import') }}
         </button>
+
+        <div class="mx-2"></div>
+        <button type="button" @click="purge" class="btn btn-sm btn-outline-danger">
+          <i class="fas fa-trash"></i>
+          {{ $t('Purge') }}
+        </button>
       </div>
       <div v-for="r in rows" :key="r.id" class="row py-2 mb-4 bg-light">
         <div v-if="!r.id" class="col-md-12">
@@ -105,6 +111,20 @@ export default {
       let fd = new FormData();
       fd.append('file', evt.target.files[0]);
       this.$inertia.post(this.route('jasmine.redirection.import'), fd, {onSuccess: () => document.location.reload()});
+    },
+
+    purge() {
+      let vm = this;
+      window.Swal.fire({
+        title: this.$t('Are you sure?'),
+        text: this.$t('Are you sure you want to purge all redirections?'),
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: this.$t('Cancel'),
+        confirmButtonText: this.$t('Ok'),
+      }).then(r => {
+        if (r.value) vm.$inertia.delete(vm.route('jasmine.redirection.purge'), {onSuccess: () => vm.load()});
+      });
     },
 
     appendQuery(r) {

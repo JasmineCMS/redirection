@@ -20,6 +20,7 @@ class JasmineRedirectionServiceProvider extends ServiceProvider
                 Route::delete('/', 'delete');
                 Route::get('/export', 'export')->name('redirection.export');
                 Route::post('/import', 'import')->name('redirection.import');
+                Route::delete('/purge', 'purge')->name('redirection.purge');
             });
         }, 'jasmine-redirection');
         

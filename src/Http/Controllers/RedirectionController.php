@@ -4,6 +4,7 @@ namespace Jasmine\Redirection\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Traits\Macroable;
 use Jasmine\Jasmine\Http\Controllers\Controller;
 use Jasmine\Redirection\Models\JasmineRedirection;
@@ -112,6 +113,15 @@ class RedirectionController extends Controller
         return redirect(route('jasmine.redirection.index'));
     }
     
+    public function purge(Request $request)
+    {
+        $model = new JasmineRedirection();
+        
+        DB::connection($model->getConnectionName())->table($model->getTable())->truncate();
+        
+        return redirect(route('jasmine.redirection.index'));
+    }
+    
     public function redirect(Request $request)
     {
         $from = $request->fullUrl();
@@ -143,5 +153,4 @@ class RedirectionController extends Controller
         
         abort(404);
     }
-    
 }

@@ -17,6 +17,11 @@
               <i class="fas fa-upload"></i>
               {{ $t('Import') }}
             </button>
+
+            <button type="button" @click="purge" class="btn btn-sm btn-outline-danger">
+              <i class="fas fa-upload"></i>
+              {{ $t('Purge') }}
+            </button>
           </div>
         </div>
 
@@ -281,7 +286,20 @@ export default {
           vm.$refs.importForm.submit();
         }, 250);
       });
+    },
 
+    purge() {
+      let vm = this;
+      window.Swal.fire({
+        title: vm.$t('swal.Delete'),
+        text: vm.$t('swal.sure', {title: 'All'}),
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: vm.$t('swal.Cancel'),
+        confirmButtonText: vm.$t('swal.Yes'),
+      }).then(r => {
+        if (r.value) vm.$inertia.delete('purge', {onSuccess: () => vm.load()});
+      });
     },
   },
 
