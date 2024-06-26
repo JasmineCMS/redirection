@@ -2,6 +2,7 @@
 
 namespace Jasmine\Redirection;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Jasmine\Jasmine\Facades\Jasmine;
