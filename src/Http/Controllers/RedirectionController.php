@@ -4,6 +4,7 @@ namespace Jasmine\Redirection\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Traits\Macroable;
 use Jasmine\Jasmine\Http\Controllers\Controller;
@@ -17,6 +18,10 @@ class RedirectionController extends Controller
     
     public function index()
     {
+        // Check permission
+        $user = Auth::guard(config('jasmine.auth.guard'))->user();
+        if (!$user->jCan('tools.redirection.read')) abort(401);
+
         return inertia('Dynamic', [
             'sfc'   => file_get_contents(__DIR__ . '/../../../resources/dynamic-vue/Index.vue'),
             'props' => [
@@ -27,6 +32,10 @@ class RedirectionController extends Controller
     
     public function save(Request $request)
     {
+        // Check permission
+        $user = Auth::guard(config('jasmine.auth.guard'))->user();
+        if (!$user->jCan('tools.redirection.edit')) abort(401);
+
         $data = $request->validate([
             'id'        => ['integer', 'nullable'],
             'from'      => ['required', 'string'],
@@ -51,6 +60,10 @@ class RedirectionController extends Controller
     
     public function delete(Request $request)
     {
+        // Check permission
+        $user = Auth::guard(config('jasmine.auth.guard'))->user();
+        if (!$user->jCan('tools.redirection.edit')) abort(401);
+
         $data = $request->validate([
             'id' => ['required', 'integer'],
         ]);
@@ -63,6 +76,10 @@ class RedirectionController extends Controller
     
     public function export(Request $request)
     {
+        // Check permission
+        $user = Auth::guard(config('jasmine.auth.guard'))->user();
+        if (!$user->jCan('tools.redirection.read')) abort(401);
+
         $redirections = JasmineRedirection::all()->toArray();
         
         header('Content-Type: application/csv');
@@ -75,6 +92,10 @@ class RedirectionController extends Controller
     
     public function import(Request $request)
     {
+        // Check permission
+        $user = Auth::guard(config('jasmine.auth.guard'))->user();
+        if (!$user->jCan('tools.redirection.edit')) abort(401);
+
         $request->validate([
             'file' => ['required', 'file'],
         ]);
@@ -115,6 +136,10 @@ class RedirectionController extends Controller
     
     public function purge(Request $request)
     {
+        // Check permission
+        $user = Auth::guard(config('jasmine.auth.guard'))->user();
+        if (!$user->jCan('tools.redirection.edit')) abort(401);
+
         $model = new JasmineRedirection();
         
         DB::connection($model->getConnectionName())->table($model->getTable())->truncate();
