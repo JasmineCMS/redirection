@@ -29,8 +29,13 @@ class JasmineRedirectionServiceProvider extends ServiceProvider
                 'href'     => route('jasmine.redirection.index'),
                 'is-route' => 'jasmine.redirection.index',
                 'title'    => __('Redirections'),
+                'hidden'   => !Auth::guard(config('jasmine.guard'))
+                    ->user()?->jCan('tools.redirection.read'),
             ];
         });
+
+        Jasmine::registerPermission('tools.redirection.read');
+        Jasmine::registerPermission('tools.redirection.edit');
     }
     
     public function boot()
